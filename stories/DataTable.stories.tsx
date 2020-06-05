@@ -16,17 +16,6 @@ export default {
 };
 
 export const Default = () => {
-  const useWithBulkActionsStyles = makeStyles((theme: Theme) => ({
-    approve: {
-      color: theme.palette.success.main,
-    },
-    reject: {
-      color: theme.palette.error.main,
-    },
-  }));
-
-  const classes = useWithBulkActionsStyles();
-
   const columns: Column[] = React.useMemo(
     () => [
       {
@@ -108,15 +97,6 @@ export const Default = () => {
       columns={columns}
       data={data}
       totalCount={data.length}
-      options={{}}
-      bulkActions={[
-        {
-          tooltip: 'Approve',
-          label: 'Approve',
-          className: classes.approve,
-          icon: <ThumbUpIcon />,
-        }
-      ]}
     />
   );
 };
