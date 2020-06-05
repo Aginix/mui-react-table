@@ -6,7 +6,7 @@
 
 ## Description
 
-Wrapper component for [Material-UI](https://github.com/mui-org/material-ui) & [React Hook Form Input](https://github.com/react-hook-form/input).
+Wrapper component for [Material-UI](https://github.com/mui-org/material-ui) & [react-table](https://github.com/tannerlinsley/react-table).
 
 See [Storybook](https://aginix.github.io/mui-react-table).
 
