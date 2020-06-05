@@ -16,7 +16,7 @@ See [Storybook](https://aginix.github.io/mui-react-table).
 yarn add @aginix/mui-react-table
 ```
 
-Note that `@aginix/mui-react-react` has peer-dependencies on `@material-ui/core`, `react-table`, all of which can also be installed from npm if your project doesn't already use them.
+Note that `@aginix/mui-react-react` has peer-dependencies on `@material-ui/core`, `@material-ui/core` and `react-table`, all of which can also be installed from npm if your project doesn't already use them.
 
 ### Storybook
 
