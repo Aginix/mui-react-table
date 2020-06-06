@@ -9,7 +9,7 @@ import React, { Fragment } from 'react';
 import DataTableFilters from './DataTableFilters';
 import { DataTableToolbarProps } from './types';
 
-const useToolbarStyles = makeStyles((theme) => ({
+const useToolbarStyles = makeStyles(theme => ({
   root: {
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(1),
@@ -73,7 +73,7 @@ const DataTableToolbar = ({
                   variant="text"
                   color="primary"
                   startIcon={action.icon}
-                  onClick={(e) => {
+                  onClick={e => {
                     if (action.onClick) action.onClick(e, preGlobalFilteredRows);
                   }}
                   className={action.className}
@@ -85,7 +85,7 @@ const DataTableToolbar = ({
           </Fragment>
         );
       }),
-    [preGlobalFilteredRows, actions],
+    [preGlobalFilteredRows, bulkActions]
   );
 
   return (

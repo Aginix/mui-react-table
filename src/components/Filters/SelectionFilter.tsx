@@ -15,8 +15,8 @@ export const SelectionFilter = memo(({ column: { setFilter, filterValue }, items
   const handleChange = useCallback((value?: string) => setFilter(value), [setFilter]);
 
   return (
-    <Select defaultValue={filterValue} onChange={(e) => handleChange((e.target.value as string) || undefined)}>
-      {items.map((item) => (
+    <Select defaultValue={filterValue} onChange={e => handleChange((e.target.value as string) || undefined)}>
+      {items.map(item => (
         <MenuItem value={item.value} key={item.label}>
           {item.label}
         </MenuItem>

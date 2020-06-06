@@ -64,14 +64,14 @@ const DataTable: FC<DataTableProps> = ({
     useSortBy,
     usePagination,
     useRowSelect,
-    useSelection,
+    useSelection
   );
 
   useEffect(() => {
     if (onStateChange) {
       onStateChange({ search, sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns });
     }
-  }, [search, sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns]);
+  }, [search, sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, onStateChange]);
 
   const handleChangePage = (_: any, newPage: number) => {
     gotoPage(newPage);
@@ -82,16 +82,12 @@ const DataTable: FC<DataTableProps> = ({
   };
 
   const tableBodyRender = () =>
-    page.map((row) => {
+    page.map(row => {
       prepareRow(row);
       return (
         <TableRow {...row.getRowProps()}>
-          {row.cells.map((cell) => {
-            return (
-              <TableCell {...cell.getCellProps()}>
-                {cell.render('Cell')}
-              </TableCell>
-            );
+          {row.cells.map(cell => {
+            return <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>;
           })}
         </TableRow>
       );
@@ -112,9 +108,9 @@ const DataTable: FC<DataTableProps> = ({
       />
       <MuiTable size="small" {...getTableProps()}>
         <TableHead>
-          {headerGroups.map((headerGroup) => (
+          {headerGroups.map(headerGroup => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
+              {headerGroup.headers.map(column => (
                 <TableCell
                   {...(column.id === 'selection'
                     ? column.getHeaderProps()

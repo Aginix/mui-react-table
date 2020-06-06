@@ -8,7 +8,7 @@ import LastPageIcon from '@material-ui/icons/LastPage';
 import { makeStyles } from '@material-ui/core/styles';
 import { DataTablePaginationActionsProps } from './types';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     flexShrink: 0,
     marginLeft: theme.spacing(2.5),

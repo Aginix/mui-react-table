@@ -8,7 +8,7 @@ export const BooleanFilter = ({ column: { Header, filterValue, setFilter, id } }
       control={
         <Switch
           checked={filterValue === 'true'}
-          onChange={(event) => setFilter(String(event.target.checked))}
+          onChange={event => setFilter(String(event.target.checked))}
           name={id}
           color="primary"
         />

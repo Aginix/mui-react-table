@@ -9,7 +9,7 @@ import { Tooltip, Button, Menu, MenuItem } from '@material-ui/core';
 import { useDebouncedCallback } from 'use-debounce';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -53,8 +53,8 @@ const DataTableFilters = ({ columns = [], filters, search, setSearch }: DataTabl
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [handleSearch] = useDebouncedCallback((value: string | undefined) => setSearch!(value), 200);
   const selectedFiltersComponents = React.useMemo(
-    () => columns.filter((column) => selectedFilters.includes(column.id)).map((column) => column.render('Filter')),
-    [filters, columns, selectedFilters],
+    () => columns.filter(column => selectedFilters.includes(column.id)).map(column => column.render('Filter')),
+    [columns, selectedFilters]
   );
 
   return (
@@ -65,7 +65,7 @@ const DataTableFilters = ({ columns = [], filters, search, setSearch }: DataTabl
         </div>
         <InputBase
           defaultValue={search}
-          onChange={(e) => {
+          onChange={e => {
             if (setSearch) {
               handleSearch(e.target.value || undefined); // Set undefined to remove the filter entirely
             }
@@ -81,7 +81,7 @@ const DataTableFilters = ({ columns = [], filters, search, setSearch }: DataTabl
       <div className={classes.filter}>{selectedFiltersComponents}</div>
       <div>
         <PopupState variant="popover" popupId="demo-popup-menu">
-          {(popupState) => (
+          {popupState => (
             <React.Fragment>
               <Tooltip title="Filter list">
                 <Button aria-label="filter list" startIcon={<FilterListIcon />} {...bindTrigger(popupState)}>
@@ -90,8 +90,8 @@ const DataTableFilters = ({ columns = [], filters, search, setSearch }: DataTabl
               </Tooltip>
               <Menu {...bindMenu(popupState)}>
                 {columns
-                  .filter((column) => !selectedFilters.includes(column.id) && column.canFilter && column.Filter)
-                  .map((column) => (
+                  .filter(column => !selectedFilters.includes(column.id) && column.canFilter && column.Filter)
+                  .map(column => (
                     <MenuItem
                       key={column.id}
                       onClick={() => {
