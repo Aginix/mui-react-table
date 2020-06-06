@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   filter: {},
 }));
 
-const DataTableFilters = ({ columns = [], filters, search, setSearch }: DataTableFiltersProps) => {
+const DataTableFilters = ({ columns = [], search, setSearch }: DataTableFiltersProps) => {
   const classes = useStyles();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [handleSearch] = useDebouncedCallback((value: string | undefined) => setSearch!(value), 200);
