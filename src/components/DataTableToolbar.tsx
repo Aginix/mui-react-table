@@ -25,7 +25,8 @@ const useToolbarStyles = makeStyles(theme => ({
           backgroundColor: theme.palette.primary.dark,
         },
   title: {
-    flex: '1 1 100%',
+    flex: '1',
+    margin: 'auto',
   },
   subtoolbar: {
     minHeight: 32,
@@ -42,6 +43,19 @@ const useToolbarStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     width: '100%',
   },
+  bulkActions:{
+    width: '100%',
+    display: 'flex',
+    flex: 2,
+    justifyContent: 'flex-end',
+    margin: 'auto',
+    [theme.breakpoints.down('xs')]: {
+      flexFlow: 'row wrap',
+    }
+  },
+  bulkActionButton:{
+    minWidth: 'unset',
+  }
 }));
 
 const DataTableToolbar = ({
@@ -76,6 +90,9 @@ const DataTableToolbar = ({
                   onClick={e => {
                     if (action.onClick) action.onClick(e, preGlobalFilteredRows);
                   }}
+                  classes={{
+                    root: classes.bulkActionButton
+                  }}
                   className={action.className}
                 >
                   {action.label}
@@ -106,7 +123,7 @@ const DataTableToolbar = ({
         )}
 
         {numSelected > 0 ? (
-          bulkActionsComponents
+          <div className={classes.bulkActions}>{bulkActionsComponents}</div>
         ) : (
           <div className={classes.filters}>
             <DataTableFilters filters={filters} columns={columns} search={search} setSearch={setSearch} />

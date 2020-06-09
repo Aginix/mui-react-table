@@ -45,7 +45,13 @@ const useStyles = makeStyles(theme => ({
       width: 200,
     },
   },
-  filter: {},
+  filter: {
+  },
+  filterList: {
+
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
 }));
 
 const DataTableFilters = ({ columns = [], search, setSearch }: DataTableFiltersProps) => {
@@ -79,7 +85,7 @@ const DataTableFilters = ({ columns = [], search, setSearch }: DataTableFiltersP
         />
       </div>
       <div className={classes.filter}>{selectedFiltersComponents}</div>
-      <div>
+      <div className={classes.filterList}>
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (
             <React.Fragment>
