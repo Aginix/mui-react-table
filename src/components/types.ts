@@ -4,6 +4,7 @@ import { TableState as ReactTableState, ColumnInstance, Filters } from 'react-ta
 export interface DataTableOptions {
   selection?: boolean;
   search?: boolean;
+  pagination?: boolean;
 }
 
 export interface TableState {

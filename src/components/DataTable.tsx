@@ -1,5 +1,6 @@
 import {
   CircularProgress,
+  Paper,
   Table as MuiTable,
   TableBody,
   TableCell,
@@ -42,8 +43,10 @@ const DataTable: FC<DataTableProps> = ({
   actions,
   onStateChange,
   bulkActions,
+  ...props,
 }) => {
   const [search, setSearch] = useState<string | undefined>(undefined);
+  const { options = { pagination: true, search: true, selection: true } } = props
   const tableOptions = onStateChange ? DEFAULT_OPTIONS : {};
   const {
     getTableProps,
@@ -146,24 +149,28 @@ const DataTable: FC<DataTableProps> = ({
           </TableBody>
         </MuiTable>
       </TableContainer>
-      <TableFooter>
-        <TableRow>
-          <TablePagination
-            rowsPerPageOptions={rowsPerPageOptions}
-            colSpan={columns.length + 1}
-            count={totalCount}
-            rowsPerPage={pageSize}
-            page={pageIndex}
-            SelectProps={{
-              inputProps: { 'aria-label': 'rows per page' },
-              native: true,
-            }}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            ActionsComponent={DataTablePaginationActions}
-          />
-        </TableRow>
-      </TableFooter>
+
+      {options.pagination ? 
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={rowsPerPageOptions}
+              colSpan={columns.length + 1}
+              count={totalCount}
+              rowsPerPage={pageSize}
+              page={pageIndex}
+              SelectProps={{
+                inputProps: { 'aria-label': 'rows per page' },
+                native: true,
+              }}
+              onChangePage={handleChangePage}
+              onChangeRowsPerPage={handleChangeRowsPerPage}
+              ActionsComponent={DataTablePaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
+        : null
+      }
     </Fragment>
   );
 };
