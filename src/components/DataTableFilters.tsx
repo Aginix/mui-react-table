@@ -45,10 +45,8 @@ const useStyles = makeStyles(theme => ({
       width: 200,
     },
   },
-  filter: {
-  },
+  filter: {},
   filterList: {
-
     display: 'flex',
     justifyContent: 'flex-end',
   },

@@ -1,6 +1,5 @@
 import {
   CircularProgress,
-  Paper,
   Table as MuiTable,
   TableBody,
   TableCell,
@@ -43,10 +42,10 @@ const DataTable: FC<DataTableProps> = ({
   actions,
   onStateChange,
   bulkActions,
-  ...props,
+  ...props
 }) => {
   const [search, setSearch] = useState<string | undefined>(undefined);
-  const { options = { pagination: true, search: true, selection: true } } = props
+  const { options = { pagination: true, search: true, selection: true } } = props;
   const tableOptions = onStateChange ? DEFAULT_OPTIONS : {};
   const {
     getTableProps,
@@ -95,7 +94,7 @@ const DataTable: FC<DataTableProps> = ({
       );
     });
 
-  const rowsPerPageOptions = useMemo(() => ([5, 10, 25, { label: 'All', value: totalCount }]), [])
+  const rowsPerPageOptions = useMemo(() => [5, 10, 25, { label: 'All', value: totalCount }], [totalCount]);
 
   return (
     <Fragment>
@@ -150,7 +149,7 @@ const DataTable: FC<DataTableProps> = ({
         </MuiTable>
       </TableContainer>
 
-      {options.pagination ? 
+      {options.pagination ? (
         <TableFooter>
           <TableRow>
             <TablePagination
@@ -169,8 +168,7 @@ const DataTable: FC<DataTableProps> = ({
             />
           </TableRow>
         </TableFooter>
-        : null
-      }
+      ) : null}
     </Fragment>
   );
 };

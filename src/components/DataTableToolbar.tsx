@@ -43,7 +43,7 @@ const useToolbarStyles = makeStyles(theme => ({
     justifyContent: 'flex-end',
     width: '100%',
   },
-  bulkActions:{
+  bulkActions: {
     width: '100%',
     display: 'flex',
     flex: 2,
@@ -51,11 +51,11 @@ const useToolbarStyles = makeStyles(theme => ({
     margin: 'auto',
     [theme.breakpoints.down('xs')]: {
       flexFlow: 'row wrap',
-    }
+    },
   },
-  bulkActionButton:{
+  bulkActionButton: {
     minWidth: 'unset',
-  }
+  },
 }));
 
 const DataTableToolbar = ({
@@ -91,7 +91,7 @@ const DataTableToolbar = ({
                     if (action.onClick) action.onClick(e, preGlobalFilteredRows);
                   }}
                   classes={{
-                    root: classes.bulkActionButton
+                    root: classes.bulkActionButton,
                   }}
                   className={action.className}
                 >
@@ -102,7 +102,7 @@ const DataTableToolbar = ({
           </Fragment>
         );
       }),
-    [preGlobalFilteredRows, bulkActions]
+    [preGlobalFilteredRows, bulkActions, classes.bulkActionButton]
   );
 
   return (
