@@ -1,6 +1,5 @@
 import {
   CircularProgress,
-  Paper,
   Table as MuiTable,
   TableBody,
   TableCell,
@@ -11,7 +10,7 @@ import {
   TableRow,
   TableSortLabel,
 } from '@material-ui/core';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, useMemo, Fragment } from 'react';
 import {
   TableOptions,
   useFilters,
@@ -93,8 +92,10 @@ const DataTable: FC<DataTableProps> = ({
       );
     });
 
+  const rowsPerPageOptions = useMemo(() => ([5, 10, 25, { label: 'All', value: totalCount }]), [])
+
   return (
-    <TableContainer component={Paper}>
+    <Fragment>
       <DataTableToolbar
         title={title}
         numSelected={Object.keys(selectedRowIds).length}
@@ -106,63 +107,64 @@ const DataTable: FC<DataTableProps> = ({
         columns={tableColumns}
         filters={filters}
       />
-      <MuiTable size="small" {...getTableProps()}>
-        <TableHead>
-          {headerGroups.map(headerGroup => (
-            <TableRow {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map(column => (
-                <TableCell
-                  {...(column.id === 'selection'
-                    ? column.getHeaderProps()
-                    : column.getHeaderProps(column.getSortByToggleProps()))}
-                >
-                  {column.render('Header')}
-                  {column.id !== 'selection' ? (
-                    <TableSortLabel
-                      active={column.isSorted}
-                      // react-table has a unsorted state which is not treated here
-                      direction={column.isSortedDesc ? 'desc' : 'asc'}
-                    />
-                  ) : null}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-
-        <TableBody {...getTableBodyProps()}>
-          {loading ? (
-            <tr>
-              <td style={{ paddingTop: 32, paddingBottom: 32 }}>
-                <div style={{ position: 'absolute', left: '50%', right: '50%' }}>
-                  <CircularProgress color="primary" size="24px" />
-                </div>
-              </td>
-            </tr>
-          ) : (
-            tableBodyRender()
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: totalCount }]}
-              colSpan={columns.length + 1}
-              count={totalCount}
-              rowsPerPage={pageSize}
-              page={pageIndex}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={DataTablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      </MuiTable>
-    </TableContainer>
+      <TableContainer>
+        <MuiTable size="small" {...getTableProps()}>
+          <TableHead>
+            {headerGroups.map(headerGroup => (
+              <TableRow {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  <TableCell
+                    {...(column.id === 'selection'
+                      ? column.getHeaderProps()
+                      : column.getHeaderProps(column.getSortByToggleProps()))}
+                  >
+                    {column.render('Header')}
+                    {column.id !== 'selection' ? (
+                      <TableSortLabel
+                        active={column.isSorted}
+                        // react-table has a unsorted state which is not treated here
+                        direction={column.isSortedDesc ? 'desc' : 'asc'}
+                      />
+                    ) : null}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody {...getTableBodyProps()}>
+            {loading ? (
+              <tr>
+                <td style={{ paddingTop: 32, paddingBottom: 32 }}>
+                  <div style={{ position: 'absolute', left: '50%', right: '50%' }}>
+                    <CircularProgress color="primary" size="24px" />
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              tableBodyRender()
+            )}
+          </TableBody>
+        </MuiTable>
+      </TableContainer>
+      <TableFooter>
+        <TableRow>
+          <TablePagination
+            rowsPerPageOptions={rowsPerPageOptions}
+            colSpan={columns.length + 1}
+            count={totalCount}
+            rowsPerPage={pageSize}
+            page={pageIndex}
+            SelectProps={{
+              inputProps: { 'aria-label': 'rows per page' },
+              native: true,
+            }}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            ActionsComponent={DataTablePaginationActions}
+          />
+        </TableRow>
+      </TableFooter>
+    </Fragment>
   );
 };
 
