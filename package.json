@@ -66,7 +66,7 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "material-ui-popup-state": "^1.5.4",
+    "material-ui-popup-state": "^1.6.0",
     "use-debounce": "^3.4.2"
   }
 }
