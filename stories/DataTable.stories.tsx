@@ -33,6 +33,7 @@ export const Default = () => {
       {
         Header: 'Active',
         accessor: 'active',
+        disableSortBy: true
       },
     ],
     [],

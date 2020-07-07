@@ -9,7 +9,9 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  Tooltip,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
 import React, { FC, useEffect, useState, useMemo, Fragment } from 'react';
 import {
   TableOptions,
@@ -33,6 +35,23 @@ const DEFAULT_OPTIONS: Partial<TableOptions<object>> = {
   manualPagination: true,
 };
 
+const useStyles = makeStyles(theme => ({
+  headerCell: {
+    overflow: 'hidden',
+    display: '-webkit-box',
+    '-webkit-line-clamp': 1,
+    '-webkit-box-orient': 'vertical'
+  },
+  dataCell: {
+    overflow: 'hidden',
+    display: '-webkit-box',
+    [theme.breakpoints.down('xs')]: {
+      '-webkit-line-clamp': 1,
+    },
+    '-webkit-box-orient': 'vertical'
+  },
+}))
+
 const DataTable: FC<DataTableProps> = ({
   title,
   columns = [],
@@ -44,6 +63,7 @@ const DataTable: FC<DataTableProps> = ({
   bulkActions,
   ...props
 }) => {
+  const classes = useStyles();
   const [search, setSearch] = useState<string | undefined>(undefined);
   const { options = { pagination: true, search: true, selection: true } } = props;
   const tableOptions = onStateChange ? DEFAULT_OPTIONS : {};
@@ -88,7 +108,7 @@ const DataTable: FC<DataTableProps> = ({
       return (
         <TableRow {...row.getRowProps()}>
           {row.cells.map(cell => {
-            return <TableCell {...cell.getCellProps()}>{cell.render('Cell')}</TableCell>;
+            return <TableCell {...cell.getCellProps()}><span className={classes.dataCell}>{cell.render('Cell')}</span></TableCell>;
           })}
         </TableRow>
       );
@@ -120,14 +140,26 @@ const DataTable: FC<DataTableProps> = ({
                       ? column.getHeaderProps()
                       : column.getHeaderProps(column.getSortByToggleProps()))}
                   >
-                    {column.render('Header')}
-                    {column.id !== 'selection' ? (
-                      <TableSortLabel
-                        active={column.isSorted}
-                        // react-table has a unsorted state which is not treated here
-                        direction={column.isSortedDesc ? 'desc' : 'asc'}
-                      />
-                    ) : null}
+                    <Tooltip
+                      PopperProps={{
+                        disablePortal: true,
+                      }}
+                      title={column.id}
+                      placement="bottom-start"
+                      enterDelay={100}
+                    >
+                      {column.isSorted && column.id !== 'selection' ? (
+                        <TableSortLabel
+                          active={column.isSorted}
+                          // react-table has a unsorted state which is not treated here
+                          direction={column.isSortedDesc ? 'desc' : 'asc'}
+                        >
+                          <span className={classes.headerCell}>
+                            {column.render('Header')}
+                          </span>
+                        </TableSortLabel>
+                      ) : <span className={classes.headerCell}>{column.render('Header')}</span>}
+                    </Tooltip>
                   </TableCell>
                 ))}
               </TableRow>
@@ -146,29 +178,28 @@ const DataTable: FC<DataTableProps> = ({
               tableBodyRender()
             )}
           </TableBody>
+          {options.pagination ? (
+            <TableFooter>
+              <TableRow>
+                <TablePagination
+                  rowsPerPageOptions={rowsPerPageOptions}
+                  colSpan={columns.length + 1}
+                  count={totalCount}
+                  rowsPerPage={pageSize}
+                  page={pageIndex}
+                  SelectProps={{
+                    inputProps: { 'aria-label': 'rows per page' },
+                    native: true,
+                  }}
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                  ActionsComponent={DataTablePaginationActions}
+                />
+              </TableRow>
+            </TableFooter>
+          ) : null}
         </MuiTable>
       </TableContainer>
-
-      {options.pagination ? (
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              rowsPerPageOptions={rowsPerPageOptions}
-              colSpan={columns.length + 1}
-              count={totalCount}
-              rowsPerPage={pageSize}
-              page={pageIndex}
-              SelectProps={{
-                inputProps: { 'aria-label': 'rows per page' },
-                native: true,
-              }}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-              ActionsComponent={DataTablePaginationActions}
-            />
-          </TableRow>
-        </TableFooter>
-      ) : null}
     </Fragment>
   );
 };
