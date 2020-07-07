@@ -11,7 +11,7 @@ import {
   TableSortLabel,
   Tooltip,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles';
 import React, { FC, useEffect, useState, useMemo, Fragment } from 'react';
 import {
   TableOptions,
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     display: '-webkit-box',
     '-webkit-line-clamp': 1,
-    '-webkit-box-orient': 'vertical'
+    '-webkit-box-orient': 'vertical',
   },
   dataCell: {
     overflow: 'hidden',
@@ -48,9 +48,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down('xs')]: {
       '-webkit-line-clamp': 1,
     },
-    '-webkit-box-orient': 'vertical'
+    '-webkit-box-orient': 'vertical',
   },
-}))
+}));
 
 const DataTable: FC<DataTableProps> = ({
   title,
@@ -108,7 +108,11 @@ const DataTable: FC<DataTableProps> = ({
       return (
         <TableRow {...row.getRowProps()}>
           {row.cells.map(cell => {
-            return <TableCell {...cell.getCellProps()}><span className={classes.dataCell}>{cell.render('Cell')}</span></TableCell>;
+            return (
+              <TableCell {...cell.getCellProps()}>
+                <span className={classes.dataCell}>{cell.render('Cell')}</span>
+              </TableCell>
+            );
           })}
         </TableRow>
       );
@@ -154,11 +158,11 @@ const DataTable: FC<DataTableProps> = ({
                           // react-table has a unsorted state which is not treated here
                           direction={column.isSortedDesc ? 'desc' : 'asc'}
                         >
-                          <span className={classes.headerCell}>
-                            {column.render('Header')}
-                          </span>
+                          <span className={classes.headerCell}>{column.render('Header')}</span>
                         </TableSortLabel>
-                      ) : <span className={classes.headerCell}>{column.render('Header')}</span>}
+                      ) : (
+                        <span className={classes.headerCell}>{column.render('Header')}</span>
+                      )}
                     </Tooltip>
                   </TableCell>
                 ))}
