@@ -1,13 +1,11 @@
 import React, { Fragment, useState } from 'react';
 
-import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { DataTableFiltersProps } from './types';
 import { Tooltip, Button, Menu, MenuItem } from '@material-ui/core';
-import { useDebouncedCallback } from 'use-debounce';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import { InputSearch } from './InputSearch';
 
 const useStyles = makeStyles(theme => ({
   search: {
@@ -55,7 +53,6 @@ const useStyles = makeStyles(theme => ({
 const DataTableFilters = ({ columns = [], search, setSearch }: DataTableFiltersProps) => {
   const classes = useStyles();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [handleSearch] = useDebouncedCallback((value: string | undefined) => setSearch!(value), 200);
   const selectedFiltersComponents = React.useMemo(
     () => columns.filter(column => selectedFilters.includes(column.id)).map(column => column.render('Filter')),
     [columns, selectedFilters]
@@ -63,26 +60,8 @@ const DataTableFilters = ({ columns = [], search, setSearch }: DataTableFiltersP
 
   return (
     <Fragment>
-      <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
-        </div>
-        <InputBase
-          defaultValue={search}
-          onChange={e => {
-            if (setSearch) {
-              handleSearch(e.target.value || undefined); // Set undefined to remove the filter entirely
-            }
-          }}
-          placeholder={`Search records...`}
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          inputProps={{ 'aria-label': 'search' }}
-        />
-      </div>
-      <div className={classes.filter}>{selectedFiltersComponents}</div>
+      <InputSearch />
+      <div className={classes.filter}>{React.Children.toArray(selectedFiltersComponents)}</div>
       <div className={classes.filterList}>
         <PopupState variant="popover" popupId="demo-popup-menu">
           {popupState => (

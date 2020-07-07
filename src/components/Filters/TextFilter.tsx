@@ -3,7 +3,7 @@ import { TextField } from '@material-ui/core';
 import { HeaderProps } from 'react-table';
 import { useDebouncedCallback } from 'use-debounce';
 
-export const TextFilter = ({ column: { Header, filterValue, setFilter } }: HeaderProps<object>) => {
+export const TextFilter = React.memo<HeaderProps<object>>(({ column: { Header, filterValue, setFilter } }) => {
   const [handleOnChange] = useDebouncedCallback((value?: string) => {
     setFilter(value);
   }, 200);
@@ -15,7 +15,9 @@ export const TextFilter = ({ column: { Header, filterValue, setFilter } }: Heade
       onChange={(e: any) => {
         handleOnChange(e.target.value || undefined);
       }}
+      variant="filled"
+      size="small"
       placeholder={`Search records...`}
     />
   );
-};
+});
