@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const DataTableFilters = ({ columns = [], search, setSearch }: DataTableFiltersProps) => {
+const DataTableFilters = ({ columns = [] }: DataTableFiltersProps) => {
   const classes = useStyles();
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const selectedFiltersComponents = React.useMemo(
