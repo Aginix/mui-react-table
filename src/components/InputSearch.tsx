@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { makeStyles, fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import { InputBase } from '@material-ui/core';
@@ -48,8 +48,8 @@ export interface InputSearchProps {
 }
 
 export const InputSearch = ({ search, setSearch }: InputSearchProps) => {
-const classes = useStyles();
-const [handleSearch] = useDebouncedCallback((value: string | undefined) => setSearch!(value), 200);
+  const classes = useStyles();
+  const [handleSearch] = useDebouncedCallback((value: string | undefined) => setSearch!(value), 200);
 
   return (
     <div className={classes.search}>
@@ -72,4 +72,4 @@ const [handleSearch] = useDebouncedCallback((value: string | undefined) => setSe
       />
     </div>
   );
-}
+};
