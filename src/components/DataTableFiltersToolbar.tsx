@@ -1,7 +1,5 @@
-import { Button } from '@material-ui/core';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import React, { Fragment } from 'react';
 
@@ -58,11 +56,11 @@ const useToolbarStyles = makeStyles(theme => ({
 }));
 
 const DataTableToolbar = ({
-  title = 'DataTable',
+  // title = 'DataTable',
   numSelected = 0,
-  preGlobalFilteredRows = [],
-  bulkActions = [],
-  actions,
+  // preGlobalFilteredRows = [],
+  // bulkActions = [],
+  // actions,
   search,
   setSearch,
   columns,

@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { FC, useEffect, useState, useMemo, Fragment, useCallback } from 'react';
+import React, { FC, useEffect, useState, useMemo, Fragment } from 'react';
 import {
   TableOptions,
   useExpanded,
@@ -106,7 +106,7 @@ const DataTable: FC<DataTableProps> = ({
 
   const tableBodyRender = () =>
     page.map(row => {
-      const handleOnRowClick = event => {
+      const handleOnRowClick = (event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>) => {
         event.stopPropagation();
         if (typeof onRowClick === 'function') {
           onRowClick(row.original);
