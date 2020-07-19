@@ -1,8 +1,5 @@
-import { Button } from '@material-ui/core';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React, { Fragment } from 'react';
 
@@ -59,51 +56,51 @@ const useToolbarStyles = makeStyles(theme => ({
 }));
 
 const DataTableToolbar = ({
-  title = 'DataTable',
+  // title = 'DataTable',
   numSelected = 0,
-  preGlobalFilteredRows = [],
-  bulkActions = [],
-  actions,
+  // preGlobalFilteredRows = [],
+  // bulkActions = [],
+  // actions,
   search,
   setSearch,
   columns,
   filters,
 }: DataTableToolbarProps) => {
   const classes = useToolbarStyles();
-  const bulkActionsComponents = React.useMemo(
-    () =>
-      bulkActions.map((action, index) => {
-        return action.hidden ? null : (
-          <Fragment>
-            {action.render ? (
-              <Tooltip title={action.tooltip || 'Action'} key={index}>
-                {action.render({ data: preGlobalFilteredRows, disabled: action.disabled, hidden: action.hidden })}
-              </Tooltip>
-            ) : (
-              <Tooltip title={action.tooltip || 'Action'} key={index}>
-                <Button
-                  disabled={action.disabled}
-                  aria-label={action.label || 'BulkAction'}
-                  variant="text"
-                  color="primary"
-                  startIcon={action.icon}
-                  onClick={e => {
-                    if (action.onClick) action.onClick(e, preGlobalFilteredRows);
-                  }}
-                  classes={{
-                    root: classes.bulkActionButton,
-                  }}
-                  className={action.className}
-                >
-                  {action.label}
-                </Button>
-              </Tooltip>
-            )}
-          </Fragment>
-        );
-      }),
-    [preGlobalFilteredRows, bulkActions, classes.bulkActionButton]
-  );
+  // const bulkActionsComponents = React.useMemo(
+  //   () =>
+  //     bulkActions.map((action, index) => {
+  //       return action.hidden ? null : (
+  //         <Fragment>
+  //           {action.render ? (
+  //             <Tooltip title={action.tooltip || 'Action'} key={index}>
+  //               {action.render({ data: preGlobalFilteredRows, disabled: action.disabled, hidden: action.hidden })}
+  //             </Tooltip>
+  //           ) : (
+  //             <Tooltip title={action.tooltip || 'Action'} key={index}>
+  //               <Button
+  //                 disabled={action.disabled}
+  //                 aria-label={action.label || 'BulkAction'}
+  //                 variant="text"
+  //                 color="primary"
+  //                 startIcon={action.icon}
+  //                 onClick={e => {
+  //                   if (action.onClick) action.onClick(e, preGlobalFilteredRows);
+  //                 }}
+  //                 classes={{
+  //                   root: classes.bulkActionButton,
+  //                 }}
+  //                 className={action.className}
+  //               >
+  //                 {action.label}
+  //               </Button>
+  //             </Tooltip>
+  //           )}
+  //         </Fragment>
+  //       );
+  //     }),
+  //   [preGlobalFilteredRows, bulkActions, classes.bulkActionButton]
+  // );
 
   return (
     <Fragment>

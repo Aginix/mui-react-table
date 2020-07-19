@@ -25,6 +25,7 @@ export interface DataTableProps {
   page?: number;
   loading?: boolean;
   onStateChange?: (state: TableState) => void;
+  onRowClick?: (rowData: object) => void;
   title?: string;
   options?: DataTableOptions;
   actions?: DataTableToolbarProps['actions'];

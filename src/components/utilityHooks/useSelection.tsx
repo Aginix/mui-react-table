@@ -13,11 +13,18 @@ export const useSelection = <D extends object = {}>(hooks: Hooks<D>) => {
         </div>
       ),
       // eslint-disable-next-line react/display-name
-      Cell: ({ row }: any) => (
-        <div>
-          <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
-        </div>
-      ),
+      Cell: ({ row }: any) => {
+        const { onChange, ...props } = row.getToggleRowSelectedProps();
+        const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+          event.stopPropagation();
+          return onChange(event, checked);
+        };
+        return (
+          <div>
+            <IndeterminateCheckbox {...props} onChange={handleOnChange} />
+          </div>
+        );
+      },
     },
     ...columns,
   ]);

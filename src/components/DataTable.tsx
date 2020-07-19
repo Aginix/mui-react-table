@@ -4,7 +4,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TablePagination,
   TableRow,
@@ -15,6 +14,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, { FC, useEffect, useState, useMemo, Fragment } from 'react';
 import {
   TableOptions,
+  useExpanded,
   useFilters,
   useGlobalFilter,
   usePagination,
@@ -61,6 +61,7 @@ const DataTable: FC<DataTableProps> = ({
   actions,
   onStateChange,
   bulkActions,
+  onRowClick,
   ...props
 }) => {
   const classes = useStyles();
@@ -83,6 +84,7 @@ const DataTable: FC<DataTableProps> = ({
     useGlobalFilter,
     useFilters,
     useSortBy,
+    useExpanded,
     usePagination,
     useRowSelect,
     useSelection
@@ -104,12 +106,22 @@ const DataTable: FC<DataTableProps> = ({
 
   const tableBodyRender = () =>
     page.map(row => {
+      const handleOnRowClick = (event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>) => {
+        event.stopPropagation();
+        if (typeof onRowClick === 'function') {
+          onRowClick(row.original);
+        }
+      };
       prepareRow(row);
       return (
-        <TableRow {...row.getRowProps()}>
+        <TableRow hover {...row.getRowProps()} role="checkbox">
           {row.cells.map(cell => {
             return (
-              <TableCell {...cell.getCellProps()}>
+              <TableCell
+                padding={cell.column.id === 'selection' ? 'checkbox' : undefined}
+                {...cell.getCellProps()}
+                onClick={cell.column.id === 'selection' ? undefined : handleOnRowClick}
+              >
                 <span className={classes.dataCell}>{cell.render('Cell')}</span>
               </TableCell>
             );
@@ -134,36 +146,37 @@ const DataTable: FC<DataTableProps> = ({
         filters={filters}
       />
       <TableContainer>
-        <MuiTable size="small" {...getTableProps()}>
+        <MuiTable {...getTableProps()}>
           <TableHead>
             {headerGroups.map(headerGroup => (
               <TableRow {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <TableCell
                     {...(column.id === 'selection'
-                      ? column.getHeaderProps()
+                      ? { ...column.getHeaderProps(), padding: 'checkbox' }
                       : column.getHeaderProps(column.getSortByToggleProps()))}
                   >
-                    <Tooltip
-                      PopperProps={{
-                        disablePortal: true,
-                      }}
-                      title={column.id}
-                      placement="bottom-start"
-                      enterDelay={100}
-                    >
-                      {column.isSorted && column.id !== 'selection' ? (
+                    {column.id === 'selection' ? (
+                      <span className={classes.headerCell}>{column.render('Header')}</span>
+                    ) : (
+                      <Tooltip
+                        PopperProps={{
+                          disablePortal: true,
+                        }}
+                        title={column.id}
+                        placement="bottom-start"
+                        enterDelay={100}
+                      >
                         <TableSortLabel
+                          disabled
                           active={column.isSorted}
                           // react-table has a unsorted state which is not treated here
                           direction={column.isSortedDesc ? 'desc' : 'asc'}
                         >
                           <span className={classes.headerCell}>{column.render('Header')}</span>
                         </TableSortLabel>
-                      ) : (
-                        <span className={classes.headerCell}>{column.render('Header')}</span>
-                      )}
-                    </Tooltip>
+                      </Tooltip>
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
@@ -182,28 +195,24 @@ const DataTable: FC<DataTableProps> = ({
               tableBodyRender()
             )}
           </TableBody>
-          {options.pagination ? (
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  rowsPerPageOptions={rowsPerPageOptions}
-                  colSpan={columns.length + 1}
-                  count={totalCount}
-                  rowsPerPage={pageSize}
-                  page={pageIndex}
-                  SelectProps={{
-                    inputProps: { 'aria-label': 'rows per page' },
-                    native: true,
-                  }}
-                  onChangePage={handleChangePage}
-                  onChangeRowsPerPage={handleChangeRowsPerPage}
-                  ActionsComponent={DataTablePaginationActions}
-                />
-              </TableRow>
-            </TableFooter>
-          ) : null}
         </MuiTable>
       </TableContainer>
+      {options.pagination ? (
+        <TablePagination
+          component="div"
+          rowsPerPageOptions={rowsPerPageOptions}
+          count={totalCount}
+          rowsPerPage={pageSize}
+          page={pageIndex}
+          SelectProps={{
+            inputProps: { 'aria-label': 'rows per page' },
+            native: true,
+          }}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+          ActionsComponent={DataTablePaginationActions}
+        />
+      ) : null}
     </Fragment>
   );
 };
