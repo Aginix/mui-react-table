@@ -84,9 +84,9 @@ export const Default = () => {
         active: false,
       },
       {
-        firstName: 'Nonpawit',
-        lastName: 'Teerachetmongkol',
-        age: 25,
+        firstName: 'B',
+        lastName: 'BBBB',
+        age: 33,
         active: true,
       },
     ],
@@ -98,6 +98,7 @@ export const Default = () => {
       columns={columns}
       data={data}
       totalCount={data.length}
+      onRowClick={(data) => alert(JSON.stringify(data))}
     />
   );
 };
