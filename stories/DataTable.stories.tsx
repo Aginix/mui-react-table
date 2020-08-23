@@ -4,11 +4,10 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { Button } from '@material-ui/core';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import DataTable from '../src';
 import { action } from '@storybook/addon-actions';
 import { Column } from 'react-table';
-import { BooleanFilter, TextFilter } from '../src';
 
 export default {
   title: 'DataTable',
@@ -120,7 +119,6 @@ export const WithAction = () => {
       {
         Header: 'First Name',
         accessor: 'firstName',
-        Filter: TextFilter,
       },
       {
         Header: 'Last Name',
@@ -133,7 +131,6 @@ export const WithAction = () => {
       {
         Header: 'Active',
         accessor: 'active',
-        Filter: BooleanFilter,
       },
     ],
     [],
@@ -202,24 +199,6 @@ export const WithAction = () => {
       onStateChange={(state) => {
         action('onStateChange')(state.filters);
       }}
-      actions={
-        <Fragment>
-          <Button color="primary" variant="contained" size="small" onClick={(e) => action('Create button clicked')(e)}>
-            Create
-          </Button>
-          <Button color="secondary" variant="outlined" size="small" onClick={(e) => action('Upload button clicked')(e)}>
-            Upload
-          </Button>
-          <Button color="default" variant="outlined" size="small" onClick={(e) => action('Import button clicked')(e)}>
-            Import
-          </Button>
-          <a href="https://www.google.co.th/" target="_blank">
-            <Button color="default" variant="text" size="small" onClick={(e) => action('Google button clicked')(e)}>
-              Google
-            </Button>
-          </a>
-        </Fragment>
-      }
       bulkActions={[
         {
           tooltip: 'Approve',
