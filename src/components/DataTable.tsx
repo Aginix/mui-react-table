@@ -153,53 +153,58 @@ const DataTable: FC<DataTableProps> = ({
                     {column.id === 'selection' ? (
                       <span className={classes.headerCell}>{column.render('Header')}</span>
                     ) : (
-                        <Tooltip
-                          PopperProps={{
-                            disablePortal: true,
-                          }}
-                          title={column.id}
-                          placement="bottom-start"
-                          enterDelay={100}
+                      <Tooltip
+                        PopperProps={{
+                          disablePortal: true,
+                        }}
+                        title={column.id}
+                        placement="bottom-start"
+                        enterDelay={100}
+                      >
+                        <TableSortLabel
+                          disabled
+                          active={column.isSorted}
+                          // react-table has a unsorted state which is not treated here
+                          direction={column.isSortedDesc ? 'desc' : 'asc'}
                         >
-                          <TableSortLabel
-                            disabled
-                            active={column.isSorted}
-                            // react-table has a unsorted state which is not treated here
-                            direction={column.isSortedDesc ? 'desc' : 'asc'}
-                          >
-                            <span className={classes.headerCell}>{column.render('Header')}</span>
-                          </TableSortLabel>
-                        </Tooltip>
-                      )}
+                          <span className={classes.headerCell}>{column.render('Header')}</span>
+                        </TableSortLabel>
+                      </Tooltip>
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
             ))}
           </TableHead>
-          {loading ? <div style={{
-            display: 'flex',
-            position: 'absolute',
-            top: 56,
-            left: 0,
-            right: 0,
-            bottom: 15,
-            alignSelf: 'center',
-            WebkitBoxAlign: 'center',
-            alignItems: 'center',
-            zIndex: 10,
-            background: '#ffffff61',
-          }}>
-            <div style={{ display: 'flex', WebkitBoxPack: 'center', justifyContent: 'center', flex: '1 1 0%', }}>
-              <div style={{
+          {loading ? (
+            <div
+              style={{
+                display: 'flex',
                 position: 'absolute',
-                top: 0,
-                width: '100%'
-              }}>
-                <LinearProgress />
+                top: 56,
+                left: 0,
+                right: 0,
+                bottom: 15,
+                alignSelf: 'center',
+                WebkitBoxAlign: 'center',
+                alignItems: 'center',
+                zIndex: 10,
+                background: '#ffffff61',
+              }}
+            >
+              <div style={{ display: 'flex', WebkitBoxPack: 'center', justifyContent: 'center', flex: '1 1 0%' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    width: '100%',
+                  }}
+                >
+                  <LinearProgress />
+                </div>
               </div>
             </div>
-          </div>
-            : null}
+          ) : null}
           <TableBody component="div" {...getTableBodyProps()}>
             {tableBodyRender()}
           </TableBody>

@@ -115,15 +115,13 @@ const DataTableToolbar = ({
           <Typography className={classes.title} color="inherit" variant="subtitle1">
             {numSelected} selected
           </Typography>
-        ) : (
-          title ? <Typography className={classes.title} variant="h6" id="tableTitle">
+        ) : title ? (
+          <Typography className={classes.title} variant="h6" id="tableTitle">
             {title}
-          </Typography> : null
-        )}
-
-        {numSelected > 0 ? (
-          <div className={classes.bulkActions}>{bulkActionsComponents}</div>
+          </Typography>
         ) : null}
+
+        {numSelected > 0 ? <div className={classes.bulkActions}>{bulkActionsComponents}</div> : null}
       </Toolbar>
     </Fragment>
   );
