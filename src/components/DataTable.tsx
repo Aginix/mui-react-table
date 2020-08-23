@@ -1,5 +1,4 @@
 import {
-  CircularProgress,
   Table as MuiTable,
   TableBody,
   TableCell,
@@ -9,9 +8,10 @@ import {
   TableRow,
   TableSortLabel,
   Tooltip,
+  LinearProgress,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { FC, useEffect, useState, useMemo, Fragment } from 'react';
+import React, { FC, useEffect, useMemo, Fragment } from 'react';
 import {
   TableOptions,
   useExpanded,
@@ -58,15 +58,13 @@ const DataTable: FC<DataTableProps> = ({
   data = [],
   loading,
   totalCount = 0,
-  actions,
   onStateChange,
   bulkActions,
   onRowClick,
   ...props
 }) => {
   const classes = useStyles();
-  const [search, setSearch] = useState<string | undefined>(undefined);
-  const { options = { pagination: true, search: true, selection: true } } = props;
+  const { options = { pagination: true, selection: true } } = props;
   const tableOptions = onStateChange ? DEFAULT_OPTIONS : {};
   const {
     getTableProps,
@@ -76,7 +74,6 @@ const DataTable: FC<DataTableProps> = ({
     setPageSize,
     prepareRow,
     page,
-    columns: tableColumns,
     preGlobalFilteredRows,
     state: { sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, selectedRowIds },
   } = useTable(
@@ -92,9 +89,9 @@ const DataTable: FC<DataTableProps> = ({
 
   useEffect(() => {
     if (onStateChange) {
-      onStateChange({ search, sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns });
+      onStateChange({ sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns });
     }
-  }, [search, sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, onStateChange]);
+  }, [sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, onStateChange]);
 
   const handleChangePage = (_: any, newPage: number) => {
     gotoPage(newPage);
@@ -114,10 +111,11 @@ const DataTable: FC<DataTableProps> = ({
       };
       prepareRow(row);
       return (
-        <TableRow hover {...row.getRowProps()} role="checkbox">
+        <TableRow component="div" hover {...row.getRowProps()} role="checkbox">
           {row.cells.map(cell => {
             return (
               <TableCell
+                component="div"
                 padding={cell.column.id === 'selection' ? 'checkbox' : undefined}
                 {...cell.getCellProps()}
                 onClick={cell.column.id === 'selection' ? undefined : handleOnRowClick}
@@ -138,20 +136,16 @@ const DataTable: FC<DataTableProps> = ({
         title={title}
         numSelected={Object.keys(selectedRowIds).length}
         preGlobalFilteredRows={preGlobalFilteredRows}
-        search={search}
-        setSearch={setSearch}
-        actions={actions}
         bulkActions={bulkActions}
-        columns={tableColumns}
-        filters={filters}
       />
       <TableContainer>
-        <MuiTable {...getTableProps()}>
-          <TableHead>
+        <MuiTable component="div" style={{ position: 'relative' }} {...getTableProps()}>
+          <TableHead component="div">
             {headerGroups.map(headerGroup => (
-              <TableRow {...headerGroup.getHeaderGroupProps()}>
+              <TableRow component="div" {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <TableCell
+                    component="div"
                     {...(column.id === 'selection'
                       ? { ...column.getHeaderProps(), padding: 'checkbox' }
                       : column.getHeaderProps(column.getSortByToggleProps()))}
@@ -159,41 +153,55 @@ const DataTable: FC<DataTableProps> = ({
                     {column.id === 'selection' ? (
                       <span className={classes.headerCell}>{column.render('Header')}</span>
                     ) : (
-                      <Tooltip
-                        PopperProps={{
-                          disablePortal: true,
-                        }}
-                        title={column.id}
-                        placement="bottom-start"
-                        enterDelay={100}
-                      >
-                        <TableSortLabel
-                          disabled
-                          active={column.isSorted}
-                          // react-table has a unsorted state which is not treated here
-                          direction={column.isSortedDesc ? 'desc' : 'asc'}
+                        <Tooltip
+                          PopperProps={{
+                            disablePortal: true,
+                          }}
+                          title={column.id}
+                          placement="bottom-start"
+                          enterDelay={100}
                         >
-                          <span className={classes.headerCell}>{column.render('Header')}</span>
-                        </TableSortLabel>
-                      </Tooltip>
-                    )}
+                          <TableSortLabel
+                            disabled
+                            active={column.isSorted}
+                            // react-table has a unsorted state which is not treated here
+                            direction={column.isSortedDesc ? 'desc' : 'asc'}
+                          >
+                            <span className={classes.headerCell}>{column.render('Header')}</span>
+                          </TableSortLabel>
+                        </Tooltip>
+                      )}
                   </TableCell>
                 ))}
               </TableRow>
             ))}
           </TableHead>
-          <TableBody {...getTableBodyProps()}>
-            {loading ? (
-              <tr>
-                <td style={{ paddingTop: 32, paddingBottom: 32 }}>
-                  <div style={{ position: 'absolute', left: '50%', right: '50%' }}>
-                    <CircularProgress color="primary" size="24px" />
-                  </div>
-                </td>
-              </tr>
-            ) : (
-              tableBodyRender()
-            )}
+          {loading ? <div style={{
+            display: 'flex',
+            position: 'absolute',
+            top: 56,
+            left: 0,
+            right: 0,
+            bottom: 15,
+            alignSelf: 'center',
+            WebkitBoxAlign: 'center',
+            alignItems: 'center',
+            zIndex: 10,
+            background: '#ffffff61',
+          }}>
+            <div style={{ display: 'flex', WebkitBoxPack: 'center', justifyContent: 'center', flex: '1 1 0%', }}>
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                width: '100%'
+              }}>
+                <LinearProgress />
+              </div>
+            </div>
+          </div>
+            : null}
+          <TableBody component="div" {...getTableBodyProps()}>
+            {tableBodyRender()}
           </TableBody>
         </MuiTable>
       </TableContainer>

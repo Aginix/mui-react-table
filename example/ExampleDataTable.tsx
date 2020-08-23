@@ -7,7 +7,7 @@ import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import * as React from 'react';
 import { Column } from 'react-table';
 
-import DataTable, { BooleanFilter, TextFilter } from '../.';
+import DataTable from '../.';
 
 
 export const ExampleDataTable = () => {
@@ -27,7 +27,6 @@ export const ExampleDataTable = () => {
       {
         Header: 'First Name',
         accessor: 'firstName',
-        Filter: TextFilter,
       },
       {
         Header: 'Last Name',
@@ -40,7 +39,6 @@ export const ExampleDataTable = () => {
       {
         Header: 'Active',
         accessor: 'active',
-        Filter: BooleanFilter,
       },
     ],
     [],
@@ -105,27 +103,11 @@ export const ExampleDataTable = () => {
       columns={columns}
       data={data}
       totalCount={data.length}
-      options={{}}
+      options={{
+        pagination: true
+      }}
       onStateChange={(state) => {
       }}
-      actions={
-        <React.Fragment>
-          <Button color="primary" variant="contained" size="small">
-            Create
-          </Button>
-          <Button color="secondary" variant="outlined" size="small">
-            Upload
-          </Button>
-          <Button color="default" variant="outlined" size="small">
-            Import
-          </Button>
-          <a href="https://www.google.co.th/" target="_blank">
-            <Button color="default" variant="text" size="small">
-              Google
-            </Button>
-          </a>
-        </React.Fragment>
-      }
       bulkActions={[
         {
           tooltip: 'Approve',

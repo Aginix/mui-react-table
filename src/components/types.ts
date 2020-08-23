@@ -1,14 +1,12 @@
 import { ReactNode } from 'react';
-import { TableState as ReactTableState, ColumnInstance, Filters } from 'react-table';
+import { TableState as ReactTableState } from 'react-table';
 
 export interface DataTableOptions {
   selection?: boolean;
-  search?: boolean;
   pagination?: boolean;
 }
 
 export interface TableState {
-  search?: string;
   sortBy: ReactTableState['sortBy'];
   pageIndex: ReactTableState['pageIndex'];
   pageSize: ReactTableState['pageSize'];
@@ -28,7 +26,6 @@ export interface DataTableProps {
   onRowClick?: (rowData: object) => void;
   title?: string;
   options?: DataTableOptions;
-  actions?: DataTableToolbarProps['actions'];
   bulkActions?: DataTableToolbarProps['bulkActions'];
 }
 
@@ -44,22 +41,10 @@ export interface DataTableToolbarBulkAction {
 }
 
 export interface DataTableToolbarProps {
-  title?: string;
+  title?: React.ReactNode;
   numSelected?: number;
   preGlobalFilteredRows?: any[];
-  actions?: ReactNode;
   bulkActions?: DataTableToolbarBulkAction[];
-  search?: string;
-  setSearch?: (search: string | undefined) => void;
-  columns?: DataTableFiltersProps['columns'];
-  filters?: DataTableFiltersProps['filters'];
-}
-
-export interface DataTableFiltersProps {
-  filters?: Filters<object>;
-  search?: string;
-  setSearch?: (value: string | undefined) => void;
-  columns?: ColumnInstance<object>[];
 }
 
 export interface DataTablePaginationActionsProps {

@@ -4,7 +4,7 @@ import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import { action } from '@storybook/addon-actions';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import DataTableToolbar from '../src/components/DataTableToolbar';
 import { Button } from '@material-ui/core';
@@ -35,31 +35,6 @@ const data = [
 export const Empty = () => <DataTableToolbar />;
 
 export const Selected = () => <DataTableToolbar numSelected={data.length} />;
-
-export const withActions = () => {
-  return (
-    <DataTableToolbar
-      actions={
-        <Fragment>
-          <Button color="primary" variant="contained" size="small" onClick={(e) => action('Create button clicked')(e)}>
-            Create
-          </Button>
-          <Button color="secondary" variant="outlined" size="small" onClick={(e) => action('Upload button clicked')(e)}>
-            Upload
-          </Button>
-          <Button color="default" variant="outlined" size="small" onClick={(e) => action('Import button clicked')(e)}>
-            Import
-          </Button>
-          <a href="https://www.google.co.th/" target="_blank">
-            <Button color="default" variant="text" size="small" onClick={(e) => action('Google button clicked')(e)}>
-              Google
-            </Button>
-          </a>
-        </Fragment>
-      }
-    />
-  );
-};
 
 export const withBulkActions = () => {
   const useWithBulkActionsStyles = makeStyles((theme: Theme) => ({

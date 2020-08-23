@@ -6,7 +6,6 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React, { Fragment } from 'react';
 
-import DataTableFilters from './DataTableFilters';
 import { DataTableToolbarProps } from './types';
 
 const useToolbarStyles = makeStyles(theme => ({
@@ -27,6 +26,7 @@ const useToolbarStyles = makeStyles(theme => ({
   title: {
     flex: '1',
     margin: 'auto',
+    width: '15%',
   },
   subtoolbar: {
     minHeight: 32,
@@ -44,7 +44,7 @@ const useToolbarStyles = makeStyles(theme => ({
     width: '100%',
   },
   bulkActions: {
-    width: '100%',
+    width: '80%',
     display: 'flex',
     flex: 2,
     justifyContent: 'flex-end',
@@ -59,28 +59,23 @@ const useToolbarStyles = makeStyles(theme => ({
 }));
 
 const DataTableToolbar = ({
-  title = 'DataTable',
+  title,
   numSelected = 0,
   preGlobalFilteredRows = [],
   bulkActions = [],
-  actions,
-  search,
-  setSearch,
-  columns,
-  filters,
 }: DataTableToolbarProps) => {
   const classes = useToolbarStyles();
   const bulkActionsComponents = React.useMemo(
     () =>
       bulkActions.map((action, index) => {
         return action.hidden ? null : (
-          <Fragment>
+          <Fragment key={index}>
             {action.render ? (
-              <Tooltip title={action.tooltip || 'Action'} key={index}>
+              <Tooltip title={action.tooltip || 'Action'}>
                 {action.render({ data: preGlobalFilteredRows, disabled: action.disabled, hidden: action.hidden })}
               </Tooltip>
             ) : (
-              <Tooltip title={action.tooltip || 'Action'} key={index}>
+              <Tooltip title={action.tooltip || 'Action'}>
                 <Button
                   disabled={action.disabled}
                   aria-label={action.label || 'BulkAction'}
@@ -105,6 +100,10 @@ const DataTableToolbar = ({
     [preGlobalFilteredRows, bulkActions, classes.bulkActionButton]
   );
 
+  if (numSelected === 0 && !title) {
+    return null;
+  }
+
   return (
     <Fragment>
       <Toolbar
@@ -117,29 +116,15 @@ const DataTableToolbar = ({
             {numSelected} selected
           </Typography>
         ) : (
-          <Typography className={classes.title} variant="h6" id="tableTitle">
+          title ? <Typography className={classes.title} variant="h6" id="tableTitle">
             {title}
-          </Typography>
+          </Typography> : null
         )}
 
         {numSelected > 0 ? (
           <div className={classes.bulkActions}>{bulkActionsComponents}</div>
-        ) : (
-          <div className={classes.filters}>
-            <DataTableFilters filters={filters} columns={columns} search={search} setSearch={setSearch} />
-          </div>
-        )}
+        ) : null}
       </Toolbar>
-      {actions ? (
-        <Toolbar className={clsx(classes.root, classes.subtoolbar)}>
-          {numSelected === 0 ? (
-            <Fragment>
-              <div className={classes.actions}>{actions}</div>
-              <div>{/* TODO: Filtering chip */}</div>
-            </Fragment>
-          ) : null}
-        </Toolbar>
-      ) : null}
     </Fragment>
   );
 };
