@@ -100,13 +100,19 @@ const DataTable: FC<DataTableProps> = ({
     }
   }, [sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, onStateChange]);
 
-  const handleChangePage = useCallback((_: any, newPage: number) => {
-    gotoPage(newPage);
-  }, [gotoPage]);
+  const handleChangePage = useCallback(
+    (_: any, newPage: number) => {
+      gotoPage(newPage);
+    },
+    [gotoPage]
+  );
 
-  const handleChangeRowsPerPage = useCallback((event: any) => {
-    setPageSize(Number(event.target.value));
-  }, [setPageSize]);
+  const handleChangeRowsPerPage = useCallback(
+    (event: any) => {
+      setPageSize(Number(event.target.value));
+    },
+    [setPageSize]
+  );
 
   const tableBodyRender = () =>
     page.map(row => {
