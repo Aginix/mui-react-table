@@ -11,7 +11,7 @@ import {
   LinearProgress,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { FC, useEffect, useMemo, Fragment } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, Fragment } from 'react';
 import {
   TableOptions,
   useExpanded,
@@ -21,6 +21,7 @@ import {
   useRowSelect,
   useSortBy,
   useTable,
+  PluginHook,
 } from 'react-table';
 import DataTableToolbar from './DataTableToolbar';
 import { useSelection } from './utilityHooks';
@@ -61,11 +62,26 @@ const DataTable: FC<DataTableProps> = ({
   onStateChange,
   bulkActions,
   onRowClick,
+  TableContainerProps,
+  rowsPerPageOptions = [5, 10, 25, { label: 'All', value: totalCount }],
   ...props
 }) => {
   const classes = useStyles();
   const { options = { pagination: true, selection: true } } = props;
   const tableOptions = onStateChange ? DEFAULT_OPTIONS : {};
+  const plugins = useMemo<PluginHook<object>[]>(
+    () =>
+      [
+        useGlobalFilter,
+        useFilters,
+        useSortBy,
+        useExpanded,
+        usePagination,
+        useRowSelect,
+        options.selection ? useSelection : null,
+      ].filter(_ => _) as any,
+    [options]
+  );
   const {
     getTableProps,
     getTableBodyProps,
@@ -76,16 +92,7 @@ const DataTable: FC<DataTableProps> = ({
     page,
     preGlobalFilteredRows,
     state: { sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, selectedRowIds },
-  } = useTable(
-    { columns, data, ...tableOptions },
-    useGlobalFilter,
-    useFilters,
-    useSortBy,
-    useExpanded,
-    usePagination,
-    useRowSelect,
-    useSelection
-  );
+  } = useTable({ columns, data, ...tableOptions }, ...plugins);
 
   useEffect(() => {
     if (onStateChange) {
@@ -93,13 +100,13 @@ const DataTable: FC<DataTableProps> = ({
     }
   }, [sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, onStateChange]);
 
-  const handleChangePage = (_: any, newPage: number) => {
+  const handleChangePage = useCallback((_: any, newPage: number) => {
     gotoPage(newPage);
-  };
+  }, [gotoPage]);
 
-  const handleChangeRowsPerPage = (event: any) => {
+  const handleChangeRowsPerPage = useCallback((event: any) => {
     setPageSize(Number(event.target.value));
-  };
+  }, [setPageSize]);
 
   const tableBodyRender = () =>
     page.map(row => {
@@ -128,8 +135,6 @@ const DataTable: FC<DataTableProps> = ({
       );
     });
 
-  const rowsPerPageOptions = useMemo(() => [5, 10, 25, { label: 'All', value: totalCount }], [totalCount]);
-
   return (
     <Fragment>
       <DataTableToolbar
@@ -138,7 +143,7 @@ const DataTable: FC<DataTableProps> = ({
         preGlobalFilteredRows={preGlobalFilteredRows}
         bulkActions={bulkActions}
       />
-      <TableContainer>
+      <TableContainer {...TableContainerProps}>
         <MuiTable component="div" style={{ position: 'relative' }} {...getTableProps()}>
           <TableHead component="div">
             {headerGroups.map(headerGroup => (
