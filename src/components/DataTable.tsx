@@ -9,6 +9,7 @@ import {
   TableSortLabel,
   Tooltip,
   LinearProgress,
+  Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { FC, useCallback, useEffect, useMemo, Fragment } from 'react';
@@ -64,6 +65,7 @@ const DataTable: FC<DataTableProps> = ({
   onRowClick,
   TableContainerProps,
   rowsPerPageOptions = [5, 10, 25, { label: 'All', value: totalCount }],
+  emptyRender,
   ...props
 }) => {
   const classes = useStyles();
@@ -220,6 +222,7 @@ const DataTable: FC<DataTableProps> = ({
             {tableBodyRender()}
           </TableBody>
         </MuiTable>
+        {emptyRender ? emptyRender : <Typography align="center" component="div">Data is empty</Typography>}
       </TableContainer>
       {options.pagination ? (
         <TablePagination

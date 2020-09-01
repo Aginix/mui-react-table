@@ -102,6 +102,45 @@ export const Default = () => {
   );
 };
 
+export const WithEmptyData = () => {
+
+  const columns: Column[] = React.useMemo(
+    () => [
+      {
+        Header: 'First Name',
+        accessor: 'firstName',
+      },
+      {
+        Header: 'Last Name',
+        accessor: 'lastName',
+      },
+      {
+        Header: 'Age',
+        accessor: 'age',
+      },
+      {
+        Header: 'Active',
+        accessor: 'active',
+      },
+    ],
+    [],
+  );
+
+  const data = React.useMemo(
+    () => [],
+    [],
+  );
+
+  return (
+    <DataTable
+      columns={columns}
+      data={data}
+      totalCount={data.length}
+      options={{}}
+    />
+  );
+};
+
 export const WithAction = () => {
   const useWithBulkActionsStyles = makeStyles((theme: Theme) => ({
     approve: {

@@ -31,6 +31,7 @@ export interface DataTableProps {
   bulkActions?: DataTableToolbarProps['bulkActions'];
   TableContainerProps?: TableContainerProps;
   rowsPerPageOptions?: TablePaginationProps['rowsPerPageOptions'];
+  emptyRender?: React.ReactNode;
 }
 
 export interface DataTableToolbarBulkAction {
