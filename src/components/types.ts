@@ -28,6 +28,7 @@ export interface DataTableProps {
   options?: DataTableOptions;
   bulkActions?: DataTableToolbarProps['bulkActions'];
   TableContainerProps?: TableContainerProps;
+  defaultRowsPerPage?: number;
   rowsPerPageOptions?: TablePaginationProps['rowsPerPageOptions'];
   emptyRender?: React.ReactNode;
 }
