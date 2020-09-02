@@ -95,7 +95,7 @@ const DataTable: FC<DataTableProps> = ({
 
   useEffect(() => {
     setPageSize(defaultRowsPerPage);
-  }, [defaultRowsPerPage, setPageSize])
+  }, [defaultRowsPerPage, setPageSize]);
 
   useEffect(() => {
     if (onStateChange) {
