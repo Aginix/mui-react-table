@@ -16,13 +16,12 @@ import React, { FC, useCallback, useEffect, useMemo, Fragment } from 'react';
 import {
   TableOptions,
   useExpanded,
-  useFilters,
-  useGlobalFilter,
   usePagination,
   useRowSelect,
   useSortBy,
   useTable,
   PluginHook,
+  Row,
 } from 'react-table';
 import DataTableToolbar from './DataTableToolbar';
 import { useSelection } from './utilityHooks';
@@ -32,8 +31,6 @@ import { DataTableProps } from './types';
 
 const DEFAULT_OPTIONS: Partial<TableOptions<object>> = {
   manualSortBy: true,
-  manualGlobalFilter: true,
-  manualFilters: true,
   manualPagination: true,
 };
 
@@ -74,11 +71,9 @@ const DataTable: FC<DataTableProps> = ({
   const plugins = useMemo<PluginHook<object>[]>(
     () =>
       [
-        useGlobalFilter,
-        useFilters,
         useSortBy,
         useExpanded,
-        usePagination,
+        options.pagination ? usePagination : null,
         useRowSelect,
         options.selection ? useSelection : null,
       ].filter(_ => _) as any,
@@ -92,15 +87,16 @@ const DataTable: FC<DataTableProps> = ({
     setPageSize,
     prepareRow,
     page,
+    rows,
     preGlobalFilteredRows,
-    state: { sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, selectedRowIds },
+    state: { sortBy, pageIndex, pageSize, hiddenColumns, selectedRowIds },
   } = useTable({ columns, data, ...tableOptions }, ...plugins);
 
   useEffect(() => {
     if (onStateChange) {
-      onStateChange({ sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns });
+      onStateChange({ sortBy, pageIndex, pageSize, hiddenColumns });
     }
-  }, [sortBy, pageIndex, pageSize, filters, globalFilter, hiddenColumns, onStateChange]);
+  }, [sortBy, pageIndex, pageSize, hiddenColumns, onStateChange]);
 
   const handleChangePage = useCallback(
     (_: any, newPage: number) => {
@@ -116,32 +112,31 @@ const DataTable: FC<DataTableProps> = ({
     [setPageSize]
   );
 
-  const tableBodyRender = () =>
-    page.map(row => {
-      const handleOnRowClick = (event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>) => {
-        event.stopPropagation();
-        if (typeof onRowClick === 'function') {
-          onRowClick(row.original);
-        }
-      };
-      prepareRow(row);
-      return (
-        <TableRow component="div" hover {...row.getRowProps()} role="checkbox">
-          {row.cells.map(cell => {
-            return (
-              <TableCell
-                component="div"
-                padding={cell.column.id === 'selection' ? 'checkbox' : undefined}
-                {...cell.getCellProps()}
-                onClick={cell.column.id === 'selection' ? undefined : handleOnRowClick}
-              >
-                <span className={classes.dataCell}>{cell.render('Cell')}</span>
-              </TableCell>
-            );
-          })}
-        </TableRow>
-      );
-    });
+  const DataRow = (row: Row<object>) => {
+    const handleOnRowClick = (event: React.MouseEvent<HTMLTableHeaderCellElement, MouseEvent>) => {
+      event.stopPropagation();
+      if (typeof onRowClick === 'function') {
+        onRowClick(row.original);
+      }
+    };
+    prepareRow(row);
+    return (
+      <TableRow component="div" hover {...row.getRowProps()} role="checkbox">
+        {row.cells.map(cell => {
+          return (
+            <TableCell
+              component="div"
+              padding={cell.column.id === 'selection' ? 'checkbox' : undefined}
+              {...cell.getCellProps()}
+              onClick={cell.column.id === 'selection' ? undefined : handleOnRowClick}
+            >
+              <span className={classes.dataCell}>{cell.render('Cell')}</span>
+            </TableCell>
+          );
+        })}
+      </TableRow>
+    );
+  };
 
   return (
     <Fragment>
@@ -219,10 +214,10 @@ const DataTable: FC<DataTableProps> = ({
             </div>
           ) : null}
           <TableBody component="div" {...getTableBodyProps()}>
-            {tableBodyRender()}
+            {options.pagination ? page.map(DataRow) : rows.map(DataRow)}
           </TableBody>
         </MuiTable>
-        {page.length === 0 ? (
+        {page?.length === 0 || rows.length === 0 ? (
           emptyRender ? (
             emptyRender
           ) : (

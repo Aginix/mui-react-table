@@ -12,8 +12,6 @@ export interface TableState {
   sortBy: ReactTableState['sortBy'];
   pageIndex: ReactTableState['pageIndex'];
   pageSize: ReactTableState['pageSize'];
-  filters: ReactTableState['filters'];
-  globalFilter: ReactTableState['globalFilter'];
   hiddenColumns: ReactTableState['hiddenColumns'];
 }
 
