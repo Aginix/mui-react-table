@@ -38,11 +38,6 @@ const useToolbarStyles = makeStyles(theme => ({
       marginRight: theme.spacing(1),
     },
   },
-  filters: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    width: '100%',
-  },
   bulkActions: {
     width: '80%',
     display: 'flex',

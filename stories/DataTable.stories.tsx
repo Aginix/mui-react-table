@@ -236,7 +236,7 @@ export const WithAction = () => {
       totalCount={data.length}
       options={{}}
       onStateChange={(state) => {
-        action('onStateChange')(state.filters);
+        action('onStateChange')(state);
       }}
       bulkActions={[
         {
