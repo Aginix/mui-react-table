@@ -222,13 +222,15 @@ const DataTable: FC<DataTableProps> = ({
             {tableBodyRender()}
           </TableBody>
         </MuiTable>
-        {emptyRender ? (
-          emptyRender
-        ) : (
-          <Typography align="center" component="div">
-            Data is empty
-          </Typography>
-        )}
+        {page.length === 0 ? (
+          emptyRender ? (
+            emptyRender
+          ) : (
+            <Typography align="center" component="div">
+              Data is empty
+            </Typography>
+          )
+        ) : null}
       </TableContainer>
       {options.pagination ? (
         <TablePagination
