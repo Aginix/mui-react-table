@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
 const DEFAULT_TABLE_TABLE = {
   pagination: true,
   selection: true,
-}
+};
 
 const DataTable: FC<DataTableProps> = ({
   title,
@@ -77,7 +77,7 @@ const DataTable: FC<DataTableProps> = ({
   const options = {
     ...DEFAULT_TABLE_TABLE,
     ...propOptions,
-  }
+  };
   const plugins = useMemo<PluginHook<object>[]>(
     () =>
       [
