@@ -100,13 +100,7 @@ const DataTable: FC<DataTableProps> = ({
     rows,
     preGlobalFilteredRows,
     state: { sortBy, pageIndex, pageSize, hiddenColumns, selectedRowIds },
-  } = useTable({ columns, data, ...tableOptions }, ...plugins);
-
-  useEffect(() => {
-    if (setPageSize) {
-      setPageSize(defaultRowsPerPage);
-    }
-  }, [defaultRowsPerPage, setPageSize]);
+  } = useTable({ columns, data, initialState: { pageSize: defaultRowsPerPage }, ...tableOptions }, ...plugins);
 
   useEffect(() => {
     if (onStateChange) {
