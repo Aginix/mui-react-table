@@ -51,6 +51,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const DEFAULT_TABLE_TABLE = {
+  pagination: true,
+  selection: true,
+}
+
 const DataTable: FC<DataTableProps> = ({
   title,
   columns = [],
@@ -67,8 +72,12 @@ const DataTable: FC<DataTableProps> = ({
   ...props
 }) => {
   const classes = useStyles();
-  const { options = { pagination: true, selection: true } } = props;
+  const { options: propOptions } = props;
   const tableOptions = onStateChange ? DEFAULT_OPTIONS : {};
+  const options = {
+    ...DEFAULT_TABLE_TABLE,
+    ...propOptions,
+  }
   const plugins = useMemo<PluginHook<object>[]>(
     () =>
       [
@@ -94,7 +103,9 @@ const DataTable: FC<DataTableProps> = ({
   } = useTable({ columns, data, ...tableOptions }, ...plugins);
 
   useEffect(() => {
-    setPageSize(defaultRowsPerPage);
+    if (setPageSize) {
+      setPageSize(defaultRowsPerPage);
+    }
   }, [defaultRowsPerPage, setPageSize]);
 
   useEffect(() => {

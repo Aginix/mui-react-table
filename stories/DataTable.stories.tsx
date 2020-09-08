@@ -136,7 +136,7 @@ export const WithEmptyData = () => {
       columns={columns}
       data={data}
       totalCount={data.length}
-      options={{}}
+      options={{ pagination: false, selection: false }}
     />
   );
 };
