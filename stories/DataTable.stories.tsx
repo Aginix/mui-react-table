@@ -102,6 +102,96 @@ export const Default = () => {
   );
 };
 
+export const DisablePagination = () => {
+  const columns: Column[] = React.useMemo(
+    () => [
+      {
+        Header: 'First Name',
+        accessor: 'firstName',
+      },
+      {
+        Header: 'Last Name',
+        accessor: 'lastName',
+      },
+      {
+        Header: 'Age',
+        accessor: 'age',
+      },
+      {
+        Header: 'Active',
+        accessor: 'active',
+        disableSortBy: true
+      },
+    ],
+    [],
+  );
+
+  const data = React.useMemo(
+    () => [
+      {
+        firstName: 'Nonpawit',
+        lastName: 'Teerachetmongkol',
+        age: 25,
+        active: true,
+      },
+      {
+        firstName: 'Nonpawit',
+        lastName: 'Teerachetmongkol',
+        age: 25,
+        active: true,
+      },
+      {
+        firstName: 'Nonpawit',
+        lastName: 'Teerachetmongkol',
+        age: 25,
+        active: false,
+      },
+      {
+        firstName: 'Nonpawit',
+        lastName: 'Teerachetmongkol',
+        age: 25,
+        active: false,
+      },
+      {
+        firstName: 'Nonpawit',
+        lastName: 'Teerachetmongkol',
+        age: 25,
+        active: true,
+      },
+      {
+        firstName: 'Nonpawit',
+        lastName: 'Teerachetmongkol',
+        age: 25,
+        active: false,
+      },
+      {
+        firstName: 'Nonpawit',
+        lastName: 'Teerachetmongkol',
+        age: 25,
+        active: false,
+      },
+      {
+        firstName: 'B',
+        lastName: 'BBBB',
+        age: 33,
+        active: true,
+      },
+    ],
+    [],
+  );
+
+  return (
+    <DataTable
+      TableProps={{ style: { minWidth: 1024 } }}
+      columns={columns}
+      data={data}
+      totalCount={data.length}
+      defaultRowsPerPage={1}
+      options={{ selection: false, pagination: true }}
+    />
+  );
+};
+
 export const WithEmptyData = () => {
 
   const columns: Column[] = React.useMemo(

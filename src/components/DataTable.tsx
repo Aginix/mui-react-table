@@ -69,6 +69,7 @@ const DataTable: FC<DataTableProps> = ({
   rowsPerPageOptions = [5, 10, 25, { label: 'All', value: totalCount }],
   emptyRender,
   defaultRowsPerPage = 10,
+  TableProps,
   ...props
 }) => {
   const classes = useStyles();
@@ -136,6 +137,7 @@ const DataTable: FC<DataTableProps> = ({
           return (
             <TableCell
               component="div"
+              scope="row"
               padding={cell.column.id === 'selection' ? 'checkbox' : undefined}
               {...cell.getCellProps()}
               onClick={cell.column.id === 'selection' ? undefined : handleOnRowClick}
@@ -157,7 +159,7 @@ const DataTable: FC<DataTableProps> = ({
         bulkActions={bulkActions}
       />
       <TableContainer {...TableContainerProps}>
-        <MuiTable component="div" style={{ position: 'relative' }} {...getTableProps()}>
+        <MuiTable component="div" style={{ position: 'relative' }} {...TableProps} {...getTableProps()}>
           <TableHead component="div">
             {headerGroups.map(headerGroup => (
               <TableRow component="div" {...headerGroup.getHeaderGroupProps()}>

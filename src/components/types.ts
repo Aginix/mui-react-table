@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { TableState as ReactTableState } from 'react-table';
 import { TableContainerProps } from '@material-ui/core/TableContainer';
 import { TablePaginationProps } from '@material-ui/core/TablePagination';
+import { TableProps } from '@material-ui/core/Table';
 
 export interface DataTableOptions {
   selection?: boolean;
@@ -28,6 +29,7 @@ export interface DataTableProps {
   options?: DataTableOptions;
   bulkActions?: DataTableToolbarProps['bulkActions'];
   TableContainerProps?: TableContainerProps;
+  TableProps?: TableProps;
   defaultRowsPerPage?: number;
   rowsPerPageOptions?: TablePaginationProps['rowsPerPageOptions'];
   emptyRender?: React.ReactNode;
