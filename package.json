@@ -60,7 +60,7 @@
     "react-is": "^16.13.1",
     "react-table": "^7.5.0",
     "storybook-dark-mode": "^0.6.1",
-    "ts-loader": "^7.0.5",
+    "ts-loader": "^8.0.9",
     "tsdx": "^0.13.2",
     "tslib": "^2.0.0",
     "typescript": "^3.9.6"
